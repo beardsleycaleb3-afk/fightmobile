@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Creative Engine: Wanderer 2D Physics</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1C1B1F;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  #canvas-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #1C1B1F;
+    overflow: hidden;
+  }
+  /* Grid Overlay - Artistic Flair Theme */
+  #grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+    background-size: 24px 24px;
+    z-index: 1;
+  }
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  /* Properties HUD (Fabric.js & Physics context) */
+  #hud-overlay {
+    position: absolute;
+    bottom: 24px;
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .hud-card {
+    padding: 10px 14px;
+    background: rgba(73, 69, 79, 0.88);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(208, 188, 255, 0.3);
+    border-radius: 18px;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    min-width: 140px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .hud-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 3px;
+  }
+  .hud-val {
+    color: #D0BCFF;
+    font-weight: bold;
+  }
+  .hud-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .hud-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.1s;
+  }
+  .hud-btn:active {
+    transform: scale(0.92);
+  }
+  .btn-purple {
+    background: #D0BCFF;
+    color: #21005D;
+  }
+  .btn-yellow {
+    background: #FFE37A;
+    color: #1A0A00;
+  }
+  .btn-pink {
+    background: #E8DEF8;
+    color: #1D192B;
+  }
+  /* Virtual Joystick (MD3 style) */
+  #joystick-base {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: 110px;
+    height: 110px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #joystick-thumb {
+    width: 46px;
+    height: 46px;
+    background: rgba(208, 188, 255, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    transition: transform 0.05s ease-out;
+  }
+  /* Engine mode badge */
+  #engine-mode-badge {
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    padding: 6px 14px;
+    background: rgba(103, 80, 164, 0.85);
+    border: 1px solid rgba(208, 188, 255, 0.5);
+    border-radius: 20px;
+    color: #FEF7FF;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 10;
+    pointer-events: none;
+    letter-spacing: 0.5px;
+  }
+  /* Gravity indicator */
+  #gravity-badge {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    padding: 6px 12px;
+    background: rgba(232, 222, 248, 0.15);
+    border: 1px solid rgba(208, 188, 255, 0.35);
+    border-radius: 16px;
+    color: #D0BCFF;
+    font-size: 10px;
+    z-index: 10;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div id="canvas-container">
+  <div id="grid-overlay"></div>
+  <canvas id="game-canvas"></canvas>
+
+  <div id="engine-mode-badge">MODE: PHASER 3 / 2D PHYSICS</div>
+  <div id="gravity-badge">GRAVITY: 9.8 m/s²</div>
+
+  <!-- Virtual Joystick (MD3 style) -->
+  <div id="joystick-base">
+    <div id="joystick-thumb"></div>
+  </div>
+
+  <!-- Properties HUD & Actions -->
+  <div id="hud-overlay">
+    <div class="hud-card" id="hud-card">
+      <div class="hud-row"><span>SELECTED:</span> <span class="hud-val" id="hud-name">Hero #1</span></div>
+      <div class="hud-row"><span>X:</span> <span class="hud-val" id="hud-x">160.0</span></div>
+      <div class="hud-row"><span>Y:</span> <span class="hud-val" id="hud-y">320.0</span></div>
+      <div class="hud-row"><span>ROT:</span> <span class="hud-val" id="hud-rot">0°</span></div>
+      <div class="hud-row"><span>REST:</span> <span class="hud-val" id="hud-rest">0.65</span></div>
+      <div class="hud-row"><span>COLLS:</span> <span class="hud-val" id="hud-colls">0</span></div>
+    </div>
+    <div class="hud-buttons">
+      <button class="hud-btn btn-pink" id="btn-jump" title="Hero Jump">↑</button>
+      <button class="hud-btn btn-yellow" id="btn-pulse" title="Pulse Shockwave">⚡</button>
+      <button class="hud-btn btn-purple" id="btn-spawn" title="Spawn Object">＋</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+
+  // ==========================================
+  // AUDIO SYNTHESIZER FOR COLLISION EFFECTS
+  // ==========================================
+  var audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) {
+      try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
+    }
+  }
+  function playSound(freq, duration, type, volume) {
+    ensureAudio();
+    if (!audioCtx) return;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = type || 'square';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(volume || 0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+  function playCollisionSound(restitution, impulse) {
+    if (impulse < 0.8) return;
+    var freq = 180 + Math.min(800, impulse * 40);
+    var vol = Math.min(0.18, 0.03 + impulse * 0.01);
+    if (restitution > 0.8) {
+      // Metallic / Gem ping
+      playSound(freq * 1.5, 0.12, 'sine', vol);
+    } else {
+      // Wood / Crate thud
+      playSound(freq, 0.09, 'sawtooth', vol);
+    }
+  }
+  function playShockwaveSound() {
+    playSound(140, 0.25, 'sawtooth', 0.15);
+    setTimeout(function(){ playSound(280, 0.18, 'square', 0.12); }, 60);
+  }
+
+  // ==========================================
+  // CANVAS & RESIZING
+  // ==========================================
+  var canvas = document.getElementById('game-canvas');
+  var ctx = canvas.getContext('2d');
+  var W = window.innerWidth;
+  var H = window.innerHeight;
+  function resizeCanvas() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // ==========================================
+  // 2D PHYSICS ENGINE & COLLISION SOLVER
+  // ==========================================
+  var gravity = { x: 0, y: 0.38 }; // 9.8m/s2 equivalent
+  var airResistance = 0.993;
+  var groundFriction = 0.92;
+  var currentMode = 'phaser'; // 'phaser' (2D Physics), 'three' (3D Light View), 'fabric' (2D Editor)
+  var bodies = [];
+  var particles = [];
+  var selectedBody = null;
+  var collisionCount = 0;
+  var nextId = 1;
+
+  // Rigid Body Constructor
+  function PhysicsBody(opts) {
+    this.id = nextId++;
+    this.name = opts.name || ("Object #" + this.id);
+    this.type = opts.type || 'box'; // 'box', 'circle', 'hero', 'platform'
+    this.x = opts.x || W/2;
+    this.y = opts.y || H/2;
+    this.w = opts.w || 40;
+    this.h = opts.h || 40;
+    this.r = opts.r || 20;
+    this.vx = opts.vx || 0;
+    this.vy = opts.vy || 0;
+    this.rot = opts.rot || 0;
+    this.vrot = opts.vrot || 0;
+    this.mass = opts.isStatic ? 0 : (opts.mass || 10);
+    this.invMass = this.mass === 0 ? 0 : 1 / this.mass;
+    this.restitution = opts.restitution !== undefined ? opts.restitution : 0.65;
+    this.friction = opts.friction !== undefined ? opts.friction : 0.92;
+    this.isStatic = !!opts.isStatic;
+    this.color = opts.color || '#E8DEF8';
+    this.borderColor = opts.borderColor || '#D0BCFF';
+    this.isHero = !!opts.isHero;
+    this.onGround = false;
+    this.collisionCounter = 0;
+  }
+
+  // Spawn initial arena objects
+  function initArena() {
+    bodies = [];
+    nextId = 1;
+
+    // Floor & Walls (static platforms)
+    bodies.push(new PhysicsBody({
+      name: 'Arena Floor',
+      type: 'platform',
+      x: W / 2,
+      y: H - 18,
+      w: W - 30,
+      h: 30,
+      isStatic: true,
+      color: '#49454F',
+      borderColor: '#CAC4D0',
+      restitution: 0.3
+    }));
+
+    // Inclined Neon Platforms
+    bodies.push(new PhysicsBody({
+      name: 'Left Ramp',
+      type: 'platform',
+      x: W * 0.25,
+      y: H * 0.65,
+      w: Math.min(130, W * 0.35),
+      h: 18,
+      rot: 0.18,
+      isStatic: true,
+      color: '#6750A4',
+      borderColor: '#D0BCFF',
+      restitution: 0.5
+    }));
+    bodies.push(new PhysicsBody({
+      name: 'Right Ramp',
+      type: 'platform',
+      x: W * 0.75,
+      y: H * 0.52,
+      w: Math.min(130, W * 0.35),
+      h: 18,
+      rot: -0.16,
+      isStatic: true,
+      color: '#6750A4',
+      borderColor: '#D0BCFF',
+      restitution: 0.5
+    }));
+
+    // Wanderer Hero (Player Controlled)
+    var hero = new PhysicsBody({
+      name: 'Wanderer Hero',
+      type: 'hero',
+      x: W * 0.3,
+      y: H * 0.3,
+      w: 36,
+      h: 46,
+      mass: 18,
+      restitution: 0.15,
+      friction: 0.85,
+      color: '#FF9D3B',
+      borderColor: '#FFE37A',
+      isHero: true
+    });
+    bodies.push(hero);
+    selectedBody = hero;
+    updateHUD(hero);
+
+    // Wooden Crates
+    spawnObject('crate', W * 0.45, H * 0.2);
+    spawnObject('crate', W * 0.52, H * 0.12);
+    spawnObject('crate', W * 0.65, H * 0.25);
+
+    // Steel Sphere
+    spawnObject('sphere', W * 0.6, H * 0.35);
+
+    // Bouncy Diamond
+    spawnObject('diamond', W * 0.75, H * 0.18);
+  }
+
+  // Spawn Specific Object Type
+  function spawnObject(type, px, py) {
+    var x = px || (W * 0.2 + Math.random() * (W * 0.6));
+    var y = py || 60;
+    var body = null;
+    if (type === 'crate') {
+      body = new PhysicsBody({
+        name: 'Wood Crate #' + nextId,
+        type: 'box',
+        x: x, y: y,
+        w: 38, h: 38,
+        mass: 12,
+        restitution: 0.45,
+        friction: 0.90,
+        color: '#E8DEF8',
+        borderColor: '#D0BCFF'
+      });
+    } else if (type === 'sphere') {
+      body = new PhysicsBody({
+        name: 'Steel Ball #' + nextId,
+        type: 'circle',
+        x: x, y: y,
+        r: 20,
+        mass: 25,
+        restitution: 0.3,
+        friction: 0.95,
+        color: '#7AD9FF',
+        borderColor: '#FFFFFF'
+      });
+    } else if (type === 'diamond') {
+      body = new PhysicsBody({
+        name: 'Bouncy Gem #' + nextId,
+        type: 'box',
+        x: x, y: y,
+        w: 32, h: 32,
+        rot: Math.PI / 4,
+        mass: 8,
+        restitution: 0.92,
+        friction: 0.98,
+        color: '#FFE37A',
+        borderColor: '#FF9D3B'
+      });
+    } else if (type === 'hero') {
+      body = new PhysicsBody({
+        name: 'Wanderer Fighter #' + nextId,
+        type: 'hero',
+        x: x, y: y,
+        w: 36, h: 46,
+        mass: 18,
+        restitution: 0.2,
+        color: '#FF9D3B',
+        borderColor: '#FFE37A',
+        isHero: true
+      });
+    } else if (type === 'platform') {
+      body = new PhysicsBody({
+        name: 'Neon Platform #' + nextId,
+        type: 'platform',
+        x: x, y: y,
+        w: 120, h: 16,
+        rot: (Math.random() - 0.5) * 0.4,
+        isStatic: true,
+        restitution: 0.6,
+        color: '#6750A4',
+        borderColor: '#D0BCFF'
+      });
+    } else {
+      // Default crate
+      return spawnObject('crate', x, y);
+    }
+    bodies.push(body);
+    selectedBody = body;
+    updateHUD(body);
+    return body;
+  }
+
+  // Spark / Impact Particles
+  function createSparks(x, y, color, count, impulse) {
+    var num = count || 8;
+    for (var i = 0; i < num; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var speed = (1.5 + Math.random() * 4) * Math.min(2.5, impulse * 0.25);
+      particles.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 25 + Math.random() * 15,
+        maxLife: 40,
+        color: color || '#FFE37A',
+        size: 2 + Math.random() * 3
+      });
+    }
+  }
+
+  // Radial Pulse Shockwave
+  function triggerShockwave(cx, cy) {
+    var x = cx !== undefined ? cx : W / 2;
+    var y = cy !== undefined ? cy : H / 2;
+    playShockwaveSound();
+    createSparks(x, y, '#D0BCFF', 28, 15);
+
+    for (var i = 0; i < bodies.length; i++) {
+      var b = bodies[i];
+      if (b.isStatic) continue;
+      var dx = b.x - x;
+      var dy = b.y - y;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      if (dist < 320) {
+        var force = (1 - dist / 320) * 16;
+        b.vx += (dx / dist) * force;
+        b.vy += (dy / dist) * force - 3;
+        b.vrot += (Math.random() - 0.5) * 0.3;
+      }
+    }
+    if (window.AndroidBridge && window.AndroidBridge.onShockwave) {
+      window.AndroidBridge.onShockwave(x, y);
+    }
+  }
+
+  // ==========================================
+  // COLLISION DETECTION & IMPULSE RESPONSE
+  // ==========================================
+
+  // AABB & Circle-Box Resolution
+  function resolveCollision(b1, b2) {
+    if (b1.isStatic && b2.isStatic) return false;
+
+    var dx = b2.x - b1.x;
+    var dy = b2.y - b1.y;
+    var overlapX = 0;
+    var overlapY = 0;
+
+    // Effective radius / half-width for simple SAT bounds
+    var r1x = b1.type === 'circle' ? b1.r : b1.w / 2;
+    var r1y = b1.type === 'circle' ? b1.r : b1.h / 2;
+    var r2x = b2.type === 'circle' ? b2.r : b2.w / 2;
+    var r2y = b2.type === 'circle' ? b2.r : b2.h / 2;
+
+    var dist = Math.sqrt(dx * dx + dy * dy);
+
+    // Circle-Circle check
+    if (b1.type === 'circle' && b2.type === 'circle') {
+      var minDist = b1.r + b2.r;
+      if (dist < minDist && dist > 0) {
+        var nx = dx / dist;
+        var ny = dy / dist;
+        var pen = minDist - dist;
+        applyCollisionImpulse(b1, b2, nx, ny, pen, b1.x + dx * 0.5, b1.y + dy * 0.5);
+        return true;
+      }
+      return false;
+    }
+
+    // Box-Box or Circle-Box AABB
+    if (Math.abs(dx) < (r1x + r2x) && Math.abs(dy) < (r1y + r2y)) {
+      overlapX = (r1x + r2x) - Math.abs(dx);
+      overlapY = (r1y + r2y) - Math.abs(dy);
+
+      var normalX = 0;
+      var normalY = 0;
+      var penetration = 0;
+
+      if (overlapX < overlapY) {
+        normalX = dx < 0 ? -1 : 1;
+        normalY = 0;
+        penetration = overlapX;
+      } else {
+        normalX = 0;
+        normalY = dy < 0 ? -1 : 1;
+        penetration = overlapY;
+      }
+
+      var contactX = b1.x + normalX * r1x;
+      var contactY = b1.y + normalY * r1y;
+      applyCollisionImpulse(b1, b2, normalX, normalY, penetration, contactX, contactY);
+      return true;
+    }
+    return false;
+  }
+
+  function applyCollisionImpulse(b1, b2, nx, ny, pen, cx, cy) {
+    // Separate bodies
+    var totalInvMass = b1.invMass + b2.invMass;
+    if (totalInvMass <= 0) return;
+
+    b1.x -= nx * pen * (b1.invMass / totalInvMass);
+    b1.y -= ny * pen * (b1.invMass / totalInvMass);
+    b2.x += nx * pen * (b2.invMass / totalInvMass);
+    b2.y += ny * pen * (b2.invMass / totalInvMass);
+
+    // Relative velocity
+    var rvx = b2.vx - b1.vx;
+    var rvy = b2.vy - b1.vy;
+    var velAlongNormal = rvx * nx + rvy * ny;
+
+    // Do not resolve if separating
+    if (velAlongNormal > 0) return;
+
+    // Coefficient of restitution
+    var e = Math.min(b1.restitution, b2.restitution);
+    var impulseScalar = -(1 + e) * velAlongNormal / totalInvMass;
+
+    // Apply normal impulse
+    var ix = impulseScalar * nx;
+    var iy = impulseScalar * ny;
+
+    b1.vx -= ix * b1.invMass;
+    b1.vy -= iy * b1.invMass;
+    b2.vx += ix * b2.invMass;
+    b2.vy += iy * b2.invMass;
+
+    // Apply friction impulse (tangent)
+    var tx = -ny;
+    var ty = nx;
+    var velAlongTangent = rvx * tx + rvy * ty;
+    var frictionScalar = -velAlongTangent * Math.min(b1.friction, b2.friction) / totalInvMass;
+    b1.vx -= tx * frictionScalar * b1.invMass;
+    b1.vy -= ty * frictionScalar * b1.invMass;
+    b2.vx += tx * frictionScalar * b2.invMass;
+    b2.vy += ty * frictionScalar * b2.invMass;
+
+    // Collision effects & counts
+    b1.collisionCounter++;
+    b2.collisionCounter++;
+    collisionCount++;
+
+    if (ny < -0.5 && b1.isHero) b1.onGround = true;
+    if (ny > 0.5 && b2.isHero) b2.onGround = true;
+
+    if (Math.abs(impulseScalar) > 1.2) {
+      createSparks(cx, cy, '#FFE37A', Math.min(16, Math.floor(impulseScalar * 2)), impulseScalar);
+      playCollisionSound(e, impulseScalar);
+
+      // Notify Android Compose Logs Console via Bridge
+      if (window.AndroidBridge && window.AndroidBridge.onCollision) {
+        window.AndroidBridge.onCollision(
+          b1.name,
+          b2.name,
+          Math.round(impulseScalar * 10) / 10,
+          Math.round(cx),
+          Math.round(cy)
+        );
+      }
+    }
+  }
+
+  // Physics Step
+  function stepPhysics() {
+    if (currentMode === 'fabric') {
+      // In Fabric.js 2D Editor mode, physics is paused so user can edit layout precisely
+      return;
+    }
+
+    var steps = 2; // Sub-stepping for stability
+    for (var s = 0; s < steps; s++) {
+      for (var i = 0; i < bodies.length; i++) {
+        var b = bodies[i];
+        if (b.isStatic || b.isDragging) continue;
+
+        b.vx += gravity.x / steps;
+        b.vy += gravity.y / steps;
+        b.vx *= airResistance;
+        b.vy *= airResistance;
+        b.vrot *= 0.98;
+
+        b.x += b.vx / steps;
+        b.y += b.vy / steps;
+        b.rot += b.vrot / steps;
+
+        // Ground / wall clamping
+        if (b.y + (b.h / 2) >= H - 10) {
+          b.y = H - 10 - (b.h / 2);
+          if (b.vy > 0) b.vy = -b.vy * b.restitution;
+          b.vx *= groundFriction;
+          b.onGround = true;
+        } else {
+          b.onGround = false;
+        }
+        if (b.x - (b.w / 2) < 10) {
+          b.x = 10 + (b.w / 2);
+          b.vx = Math.abs(b.vx) * b.restitution;
+        }
+        if (b.x + (b.w / 2) > W - 10) {
+          b.x = W - 10 - (b.w / 2);
+          b.vx = -Math.abs(b.vx) * b.restitution;
+        }
+      }
+
+      // Check all pairs for collisions
+      for (var i = 0; i < bodies.length; i++) {
+        for (var j = i + 1; j < bodies.length; j++) {
+          resolveCollision(bodies[i], bodies[j]);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // THREE.JS / 3D AMBIENT & DIRECTIONAL LIGHTING
+  // ==========================================
+  var lightAngle = 0;
+  var lightRadius = 150;
+  function drawThreeLightScene() {
+    lightAngle += 0.02;
+    var lx = W / 2 + Math.cos(lightAngle) * lightRadius;
+    var ly = H * 0.28 + Math.sin(lightAngle) * (lightRadius * 0.38);
+
+    // 1. Ambient Lighting Layer (Artistic Flair #EADDFF lavender ambient atmospheric fill)
+    var ambientIntensity = 0.38;
+    ctx.save();
+    var ambGrad = ctx.createLinearGradient(0, 0, 0, H);
+    ambGrad.addColorStop(0, 'rgba(74, 62, 104, 0.18)');
+    ambGrad.addColorStop(1, 'rgba(42, 33, 61, 0.28)');
+    ctx.fillStyle = ambGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Directional Light Source & God Rays
+    var grad = ctx.createRadialGradient(lx, ly, 4, lx, ly, 220);
+    grad.addColorStop(0, 'rgba(255, 227, 122, 0.95)');
+    grad.addColorStop(0.25, 'rgba(208, 188, 255, 0.40)');
+    grad.addColorStop(1, 'rgba(28, 27, 31, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Celestial Directional Key Light Orb
+    ctx.beginPath();
+    ctx.arc(lx, ly, 14, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFE37A';
+    ctx.fill();
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // 3. Render 3D Objects with Ambient + Directional Lambertian Shading
+    for (var i = 0; i < bodies.length; i++) {
+      var b = bodies[i];
+      if (b.isStatic) continue;
+
+      var dx = lx - b.x;
+      var dy = ly - b.y;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      // Calculate 3D Directional Light Vector (L) and Lambertian Diffuse
+      var dirX = dx / dist;
+      var dirY = dy / dist;
+      var normalX = Math.cos(b.rot);
+      var normalY = Math.sin(b.rot);
+      var lambertDiffuse = Math.max(0, (dirX * normalX + dirY * normalY)) * 0.65;
+
+      // Combined Ambient + Directional Lighting Equation
+      var totalIntensity = Math.min(1.0, ambientIntensity + lambertDiffuse + (150 / dist) * 0.40);
+
+      // Cast Directional Shadow along negative light vector
+      ctx.save();
+      var shadowOffsetX = -dx * 0.28;
+      var shadowOffsetY = -dy * 0.28;
+      ctx.translate(b.x + shadowOffsetX, b.y + shadowOffsetY);
+      ctx.fillStyle = 'rgba(42, 33, 61, 0.55)';
+      if (b.type === 'circle') {
+        ctx.beginPath();
+        ctx.arc(0, 0, b.r * 1.12, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w * 1.12, b.h * 1.12);
+      }
+      ctx.restore();
+
+      // Render Isometric 3D Extrusion with Directional Depth & Specular Highlight
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.rot);
+
+      if (b.type === 'circle') {
+        // 3D Shaded Sphere with Ambient Lavender dark side & Specular highlight
+        ctx.beginPath();
+        ctx.arc(0, 0, b.r, 0, Math.PI * 2);
+        var sphereGrad = ctx.createRadialGradient(
+          dirX * b.r * 0.4, dirY * b.r * 0.4, b.r * 0.1,
+          0, 0, b.r
+        );
+        sphereGrad.addColorStop(0, '#FFFFFF');
+        sphereGrad.addColorStop(0.35, b.color);
+        sphereGrad.addColorStop(1, '#4A3E68'); // Ambient shadow color
+        ctx.fillStyle = sphereGrad;
+        ctx.fill();
+        ctx.strokeStyle = b.borderColor;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      } else {
+        // Isometric 3D Side/Bottom Extrusion Face (Depth = 16px)
+        var depth = 16;
+        ctx.fillStyle = 'rgba(74, 62, 104, 0.75)'; // Ambient shadow side face
+        ctx.fillRect(-b.w / 2 + 4, -b.h / 2 + 4, b.w, b.h);
+
+        // Main Top Surface Face with Directional Light Shading
+        ctx.globalAlpha = totalIntensity;
+        ctx.fillStyle = b.color;
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.strokeStyle = b.borderColor;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-b.w / 2, -b.h / 2, b.w, b.h);
+
+        // Specular Bevel Highlight along top/left edges facing Directional Light
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, 4);
+        ctx.fillRect(-b.w / 2, -b.h / 2, 4, b.h);
+      }
+      ctx.restore();
+    }
+
+    // Telemetry & Lighting status banner
+    ctx.fillStyle = '#D0BCFF';
+    ctx.font = 'bold 12px "Courier New", monospace';
+    ctx.fillText('THREE.JS 3D SCENE | AMBIENT: #EADDFF (38%) | DIR KEY ANGLE: ' + Math.round(lightAngle * 57) + '°', 24, 60);
+    ctx.fillStyle = '#FFE37A';
+    ctx.font = 'bold 11px "Courier New", monospace';
+    ctx.fillText('LAMBERTIAN DIFFUSE + SPECULAR BEVEL | 3D ISOMETRIC EXTRUSION', 24, 78);
+    ctx.restore();
+  }
+
+  // ==========================================
+  // FABRIC.JS / 2D EDITOR SELECTION & HANDLES
+  // ==========================================
+  function drawFabricSelection(b) {
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(b.rot);
+
+    var w = b.type === 'circle' ? b.r * 2 : b.w;
+    var h = b.type === 'circle' ? b.r * 2 : b.h;
+    var pad = 6;
+
+    // Bounding Box
+    ctx.strokeStyle = '#D0BCFF';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 3]);
+    ctx.strokeRect(-w/2 - pad, -h/2 - pad, w + pad*2, h + pad*2);
+    ctx.setLineDash([]);
+
+    // 4 Corner Resizing Squares
+    var hs = 6; // Handle half size
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#6750A4';
+    ctx.lineWidth = 1.5;
+
+    var corners = [
+      [-w/2 - pad, -h/2 - pad],
+      [w/2 + pad, -h/2 - pad],
+      [-w/2 - pad, h/2 + pad],
+      [w/2 + pad, h/2 + pad]
+    ];
+    for (var i = 0; i < corners.length; i++) {
+      ctx.fillRect(corners[i][0] - hs, corners[i][1] - hs, hs*2, hs*2);
+      ctx.strokeRect(corners[i][0] - hs, corners[i][1] - hs, hs*2, hs*2);
+    }
+
+    // Rotation Control Handle at top
+    ctx.beginPath();
+    ctx.moveTo(0, -h/2 - pad);
+    ctx.lineTo(0, -h/2 - pad - 18);
+    ctx.strokeStyle = '#D0BCFF';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, -h/2 - pad - 18, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFE37A';
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // ==========================================
+  // RENDER MAIN CANVAS SCENE
+  // ==========================================
+  function drawScene() {
+    ctx.clearRect(0, 0, W, H);
+
+    if (currentMode === 'three') {
+      drawThreeLightScene();
+    } else {
+      // Draw 2D Physics Arena Objects
+      for (var i = 0; i < bodies.length; i++) {
+        var b = bodies[i];
+
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.rot);
+
+        if (b.type === 'circle') {
+          // Circle Sphere
+          ctx.beginPath();
+          ctx.arc(0, 0, b.r, 0, Math.PI * 2);
+          ctx.fillStyle = b.color;
+          ctx.fill();
+          ctx.strokeStyle = b.borderColor;
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Highlight
+          ctx.beginPath();
+          ctx.arc(-b.r * 0.3, -b.r * 0.3, b.r * 0.25, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+          ctx.fill();
+        } else if (b.isHero) {
+          // Wanderer Hero Fighter
+          ctx.fillStyle = b.color;
+          ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+          ctx.strokeStyle = b.borderColor;
+          ctx.lineWidth = 3;
+          ctx.strokeRect(-b.w / 2, -b.h / 2, b.w, b.h);
+
+          // Eye visor
+          ctx.fillStyle = '#1D1B20';
+          ctx.fillRect(-b.w * 0.3, -b.h * 0.25, b.w * 0.6, 8);
+          ctx.fillStyle = '#7AD9FF';
+          ctx.fillRect(-b.w * 0.2, -b.h * 0.23, 10, 4);
+
+          // Gauntlet orange glow
+          ctx.fillStyle = '#FFE37A';
+          ctx.fillRect(b.w * 0.2, 0, 8, 12);
+        } else {
+          // Box / Platform / Diamond
+          ctx.fillStyle = b.color;
+          ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+          ctx.strokeStyle = b.borderColor;
+          ctx.lineWidth = 2.5;
+          ctx.strokeRect(-b.w / 2, -b.h / 2, b.w, b.h);
+
+          // Crate Cross Bracing
+          if (b.type === 'box') {
+            ctx.strokeStyle = 'rgba(29, 27, 32, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(-b.w / 2, -b.h / 2);
+            ctx.lineTo(b.w / 2, b.h / 2);
+            ctx.moveTo(b.w / 2, -b.h / 2);
+            ctx.lineTo(-b.w / 2, b.h / 2);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+
+        // Draw Fabric.js style handles on selected object
+        if (selectedBody === b) {
+          drawFabricSelection(b);
+        }
+      }
+    }
+
+    // Draw Particle Sparks
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1; // spark gravity
+      p.life--;
+
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+      var alpha = p.life / p.maxLife;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // ==========================================
+  // HUD INSPECTOR & BRIDGE UPDATES
+  // ==========================================
+  function updateHUD(b) {
+    if (!b) return;
+    document.getElementById('hud-name').textContent = b.name;
+    document.getElementById('hud-x').textContent = Math.round(b.x * 10) / 10;
+    document.getElementById('hud-y').textContent = Math.round(b.y * 10) / 10;
+    document.getElementById('hud-rot').textContent = Math.round(b.rot * 57.3) + "°";
+    document.getElementById('hud-rest').textContent = b.restitution;
+    document.getElementById('hud-colls').textContent = b.collisionCounter;
+
+    // Send selection telemetry to Kotlin Compose Bridge
+    if (window.AndroidBridge && window.AndroidBridge.onObjectSelected) {
+      window.AndroidBridge.onObjectSelected(
+        b.name,
+        Math.round(b.x * 10) / 10,
+        Math.round(b.y * 10) / 10,
+        Math.round(b.rot * 57.3),
+        Math.round(Math.sqrt(b.vx * b.vx + b.vy * b.vy) * 10) / 10
+      );
+    }
+  }
+
+  // ==========================================
+  // TOUCH JOYSTICK & OBJECT MANIPULATION
+  // ==========================================
+  var joystickActive = false;
+  var joyStartX = 0;
+  var joyStartY = 0;
+  var joyVector = { x: 0, y: 0 };
+  var thumb = document.getElementById('joystick-thumb');
+  var base = document.getElementById('joystick-base');
+
+  base.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    joystickActive = true;
+    var t = e.targetTouches[0];
+    var rect = base.getBoundingClientRect();
+    joyStartX = rect.left + rect.width / 2;
+    joyStartY = rect.top + rect.height / 2;
+    updateJoystick(t.clientX, t.clientY);
+  }, { passive: false });
+
+  window.addEventListener('touchmove', function(e) {
+    if (!joystickActive) return;
+    var t = e.targetTouches[0];
+    updateJoystick(t.clientX, t.clientY);
+  }, { passive: false });
+
+  window.addEventListener('touchend', function(e) {
+    if (!joystickActive) return;
+    joystickActive = false;
+    joyVector.x = 0;
+    joyVector.y = 0;
+    thumb.style.transform = 'translate(0px, 0px)';
+  }, { passive: false });
+
+  function updateJoystick(cx, cy) {
+    var dx = cx - joyStartX;
+    var dy = cy - joyStartY;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var maxDist = 34;
+    if (dist > maxDist) {
+      dx = (dx / dist) * maxDist;
+      dy = (dy / dist) * maxDist;
+    }
+    thumb.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    joyVector.x = dx / maxDist;
+    joyVector.y = dy / maxDist;
+  }
+
+  // Canvas Object Selection & Touch Dragging
+  var dragBody = null;
+  var dragOffsetX = 0;
+  var dragOffsetY = 0;
+
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    var t = e.targetTouches[0];
+    var rect = canvas.getBoundingClientRect();
+    var touchX = t.clientX - rect.left;
+    var touchY = t.clientY - rect.top;
+
+    // Check if user tapped a body (reverse order for top z-index first)
+    for (var i = bodies.length - 1; i >= 0; i--) {
+      var b = bodies[i];
+      var rx = b.type === 'circle' ? b.r : b.w / 2;
+      var ry = b.type === 'circle' ? b.r : b.h / 2;
+      if (Math.abs(touchX - b.x) <= rx + 10 && Math.abs(touchY - b.y) <= ry + 10) {
+        selectedBody = b;
+        dragBody = b;
+        b.isDragging = true;
+        dragOffsetX = b.x - touchX;
+        dragOffsetY = b.y - touchY;
+        b.vx = 0;
+        b.vy = 0;
+        updateHUD(b);
+        playSound(440, 0.04, 'sine', 0.05);
+        return;
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', function(e) {
+    if (!dragBody) return;
+    e.preventDefault();
+    var t = e.targetTouches[0];
+    var rect = canvas.getBoundingClientRect();
+    var touchX = t.clientX - rect.left;
+    var touchY = t.clientY - rect.top;
+
+    var oldX = dragBody.x;
+    var oldY = dragBody.y;
+    dragBody.x = touchX + dragOffsetX;
+    dragBody.y = touchY + dragOffsetY;
+
+    // Fling velocity
+    dragBody.vx = (dragBody.x - oldX) * 0.8;
+    dragBody.vy = (dragBody.y - oldY) * 0.8;
+
+    updateHUD(dragBody);
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', function(e) {
+    if (dragBody) {
+      dragBody.isDragging = false;
+      dragBody = null;
+    }
+  }, { passive: false });
+
+  // ==========================================
+  // ACTION BUTTONS
+  // ==========================================
+  document.getElementById('btn-jump').addEventListener('click', function() {
+    for (var i = 0; i < bodies.length; i++) {
+      if (bodies[i].isHero) {
+        bodies[i].vy = -11.5;
+        bodies[i].onGround = false;
+        createSparks(bodies[i].x, bodies[i].y + 20, '#FFE37A', 10, 8);
+        playSound(520, 0.1, 'sine', 0.1);
+        break;
+      }
+    }
+  });
+
+  document.getElementById('btn-pulse').addEventListener('click', function() {
+    triggerShockwave(W / 2, H / 2);
+  });
+
+  document.getElementById('btn-spawn').addEventListener('click', function() {
+    var types = ['crate', 'sphere', 'diamond'];
+    var t = types[Math.floor(Math.random() * types.length)];
+    spawnObject(t, W * 0.3 + Math.random() * (W * 0.4), 50);
+  });
+
+  // ==========================================
+  // MAIN SIMULATION LOOP & TELEMETRY
+  // ==========================================
+  var lastTime = performance.now();
+  var frameCounter = 0;
+  var fpsTimer = 0;
+  var currentFps = 60;
+
+  function loop(time) {
+    requestAnimationFrame(loop);
+
+    var dt = time - lastTime;
+    lastTime = time;
+    frameCounter++;
+    fpsTimer += dt;
+    if (fpsTimer >= 1000) {
+      currentFps = Math.round((frameCounter * 1000) / fpsTimer);
+      frameCounter = 0;
+      fpsTimer = 0;
+      if (window.AndroidBridge && window.AndroidBridge.onFpsUpdate) {
+        window.AndroidBridge.onFpsUpdate(currentFps, bodies.length);
+      }
+    }
+
+    // Apply Virtual Joystick to Hero
+    if (joystickActive) {
+      for (var i = 0; i < bodies.length; i++) {
+        var b = bodies[i];
+        if (b.isHero) {
+          b.vx += joyVector.x * 1.1;
+          // Apply upward lift if stick pushed up
+          if (joyVector.y < -0.6 && b.onGround) {
+            b.vy = -10;
+            b.onGround = false;
+            playSound(520, 0.08, 'sine', 0.08);
+          }
+          break;
+        }
+      }
+    }
+
+    stepPhysics();
+    drawScene();
+
+    if (selectedBody) {
+      updateHUD(selectedBody);
+    }
+  }
+
+  // ==========================================
+  // EXPOSED BRIDGE METHODS FOR KOTLIN
+  // ==========================================
+  window.setEngineMode = function(mode) {
+    currentMode = mode;
+    var badge = document.getElementById('engine-mode-badge');
+    if (mode === 'phaser') {
+      badge.textContent = 'MODE: PHASER 3 / 2D PHYSICS';
+    } else if (mode === 'three') {
+      badge.textContent = 'MODE: THREE.JS / 3D AR LIGHT';
+    } else if (mode === 'fabric') {
+      badge.textContent = 'MODE: FABRIC.JS / 2D EDITOR';
+    }
+  };
+
+  window.spawnPhysicsObject = function(type) {
+    return spawnObject(type);
+  };
+
+  window.toggleGravityMode = function() {
+    if (gravity.y > 0) {
+      gravity.y = 0;
+      document.getElementById('gravity-badge').textContent = 'GRAVITY: 0G (SPACE)';
+    } else {
+      gravity.y = 0.38;
+      document.getElementById('gravity-badge').textContent = 'GRAVITY: 9.8 m/s²';
+    }
+  };
+
+  window.triggerRadialShockwave = function() {
+    triggerShockwave(W / 2, H / 2);
+  };
+
+  window.resetArenaScene = function() {
+    initArena();
+  };
+
+  // Start Engine
+  initArena();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

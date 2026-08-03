@@ -1,0 +1,6 @@
+{
+  "name": "Creative Engine",
+  "description": "Artistic Flair Creative Engine with Phaser3, Three.js, and Fabric.js interactive modes",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
