@@ -16,6 +16,37 @@ var gravity = { x: 0, y: 9.8 };
 var airResistance = 0.99;
 var currentMode = 'phaser';
 
+var spriteAssetBase = 'assets/sprites/player1/east';
+var spriteImageCache = {};
+var heroSpriteAnimations = {
+  idle: ['idle/frame_000.png', 'idle/frame_001.png', 'idle/frame_002.png', 'idle/frame_003.png', 'idle/frame_004.png', 'idle/frame_005.png', 'idle/frame_006.png', 'idle/frame_007.png'],
+  running: ['running/frame_000.png', 'running/frame_001.png', 'running/frame_002.png', 'running/frame_003.png', 'running/frame_004.png', 'running/frame_005.png', 'running/frame_006.png', 'running/frame_007.png'],
+  falling: ['falling/frame_000.png', 'falling/frame_001.png', 'falling/frame_002.png', 'falling/frame_003.png', 'falling/frame_004.png', 'falling/frame_005.png', 'falling/frame_006.png'],
+  crouch: ['crouch/frame_000.png', 'crouch/frame_001.png', 'crouch/frame_002.png', 'crouch/frame_003.png', 'crouch/frame_004.png'],
+  cross: ['cross/frame_000.png', 'cross/frame_001.png', 'cross/frame_002.png', 'cross/frame_003.png', 'cross/frame_004.png', 'cross/frame_005.png'],
+  jab: ['jab/frame_000.png', 'jab/frame_001.png', 'jab/frame_002.png'],
+  kick: ['kick/frame_000.png', 'kick/frame_001.png', 'kick/frame_002.png', 'kick/frame_003.png', 'kick/frame_004.png', 'kick/frame_005.png', 'kick/frame_006.png'],
+  fireball: ['fireball/frame_000.png', 'fireball/frame_001.png', 'fireball/frame_002.png', 'fireball/frame_003.png', 'fireball/frame_004.png', 'fireball/frame_005.png'],
+  takehit: ['takehit/frame_000.png', 'takehit/frame_001.png', 'takehit/frame_002.png', 'takehit/frame_003.png', 'takehit/frame_004.png', 'takehit/frame_005.png'],
+  throwobject: ['throwobject/frame_000.png', 'throwobject/frame_001.png', 'throwobject/frame_002.png', 'throwobject/frame_003.png', 'throwobject/frame_004.png', 'throwobject/frame_005.png', 'throwobject/frame_006.png'],
+  uppercut: ['uppercut/frame_000.png', 'uppercut/frame_001.png', 'uppercut/frame_002.png', 'uppercut/frame_003.png', 'uppercut/frame_004.png', 'uppercut/frame_005.png', 'uppercut/frame_006.png'],
+  victory: ['victory/frame_000.png', 'victory/frame_001.png', 'victory/frame_002.png', 'victory/frame_003.png', 'victory/frame_004.png', 'victory/frame_005.png', 'victory/frame_006.png', 'victory/frame_007.png', 'victory/frame_008.png', 'victory/frame_009.png', 'victory/frame_010.png', 'victory/frame_011.png', 'victory/frame_012.png'],
+  getup: ['getup/frame_000.png', 'getup/frame_001.png', 'getup/frame_002.png', 'getup/frame_003.png', 'getup/frame_004.png']
+};
+
+function resolveSpriteAssetPath(relativePath) {
+  return spriteAssetBase + '/' + relativePath;
+}
+
+function loadSpriteFrame(relativePath) {
+  var fullPath = resolveSpriteAssetPath(relativePath);
+  if (spriteImageCache[fullPath]) return spriteImageCache[fullPath];
+  var img = new Image();
+  img.src = fullPath;
+  spriteImageCache[fullPath] = img;
+  return img;
+}
+
 // AUDIO SYNTHESIZER (Touch activated for Android Chrome Mobile)
 var audioCtx = null;
 var userInteracted = false;
@@ -157,6 +188,50 @@ function PhysicsBody(options) {
   this.onGround = false;
   this.shieldHP = options.shieldHP || 0;
   this.patrolBaseX = options.patrolBaseX || 0;
+  this.sprite = null;
+  this.spriteFacing = 1;
+}
+
+PhysicsBody.prototype.setSpriteAnimation = function(name) {
+  var frames = heroSpriteAnimations[name];
+  if (!frames || !frames.length) return;
+  this.sprite = this.sprite || {};
+  this.sprite.animationName = name;
+  this.sprite.frameIndex = 0;
+  this.sprite.frameTimer = 0;
+  this.sprite.frameDuration = 0.09;
+  this.sprite.currentFrames = frames.map(function(relativePath) {
+    return loadSpriteFrame(relativePath);
+  });
+};
+
+function updateHeroSprite(body, dt) {
+  if (!body || body.type !== 'hero' || !body.sprite) return;
+
+  var desiredAnim = 'idle';
+  if (touchState && touchState.burstPressed) {
+    desiredAnim = 'fireball';
+  } else if (!body.onGround) {
+    desiredAnim = 'falling';
+  } else if (touchState && (Math.abs(touchState.moveX) > 0.08 || Math.abs(body.vx) > 0.8)) {
+    desiredAnim = 'running';
+  }
+
+  if (body.sprite.animationName !== desiredAnim) {
+    body.setSpriteAnimation(desiredAnim);
+  }
+
+  body.sprite.frameTimer += dt;
+  if (body.sprite.frameTimer >= body.sprite.frameDuration) {
+    body.sprite.frameTimer = 0;
+    body.sprite.frameIndex = (body.sprite.frameIndex + 1) % Math.max(1, body.sprite.currentFrames.length);
+  }
+
+  if (body.vx < -0.2) {
+    body.spriteFacing = -1;
+  } else if (body.vx > 0.2) {
+    body.spriteFacing = 1;
+  }
 }
 
 // DRAW SHAPES WITH MATERIAL 3 & ENGINE MODE STYLING
@@ -178,6 +253,20 @@ PhysicsBody.prototype.draw = function(ctx) {
 
   // Draw Hero / Crate / Sphere / Diamond / Collectable / Boss
   if (this.type === 'hero') {
+    if (this.sprite && this.sprite.currentFrames && this.sprite.currentFrames.length) {
+      var frameImg = this.sprite.currentFrames[this.sprite.frameIndex];
+      if (frameImg && frameImg.complete) {
+        var spriteW = Math.max(this.w * 1.7, 60);
+        var spriteH = Math.max(this.h * 1.55, 60);
+        if (this.spriteFacing < 0) {
+          ctx.scale(-1, 1);
+        }
+        ctx.drawImage(frameImg, -spriteW / 2, -spriteH / 2, spriteW, spriteH);
+        ctx.restore();
+        return;
+      }
+    }
+
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.roundRect(-this.w/2, -this.h/2, this.w, this.h, 10);

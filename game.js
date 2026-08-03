@@ -210,6 +210,7 @@ function spawnObject(type, x, y) {
       isHero: true
     });
     hero = body;
+    body.setSpriteAnimation('idle');
   } else if (type === 'crate') {
     body = new PhysicsBody({
       name: 'Wooden Crate #' + nextId,
@@ -483,7 +484,10 @@ function loop(timestamp) {
     }
   }
 
-  // Draw Bodies
+  // Update sprite animations and draw bodies
+  for (var i = 0; i < bodies.length; i++) {
+    updateHeroSprite(bodies[i], dt);
+  }
   for (var i = 0; i < bodies.length; i++) {
     bodies[i].draw(ctx);
   }
