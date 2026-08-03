@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#211C2E">
+<meta name="color-scheme" content="dark">
+<title>FightMobile Creative Engine</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #1C1B1F;
+    font-family: 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  #scene-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+  }
+  /* Top Right Badges */
+  #engine-mode-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 12px;
+    background: rgba(103, 80, 164, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid #D0BCFF;
+    border-radius: 20px;
+    color: #FEF7FF;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  #gravity-badge {
+    position: absolute;
+    top: 44px;
+    right: 14px;
+    padding: 4px 10px;
+    background: rgba(33, 28, 46, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #E8DEF8;
+    border-radius: 16px;
+    color: #E8DEF8;
+    font-size: 9px;
+    font-weight: 600;
+    z-index: 10;
+    pointer-events: none;
+  }
+  /* Arcade High Score & Lore Overlay */
+  #arcade-overlay {
+    position: absolute;
+    top: 64px;
+    left: 14px;
+    right: 14px;
+    padding: 10px 14px;
+    background: rgba(33, 28, 46, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 227, 122, 0.45);
+    border-radius: 16px;
+    color: #FEF7FF;
+    font-size: 11px;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .arcade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  .arcade-badge {
+    background: rgba(103, 80, 164, 0.45);
+    border: 1px solid #D0BCFF;
+    color: #D0BCFF;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+  .arcade-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 10px;
+    color: #CAC4D0;
+    font-family: 'Courier New', monospace;
+  }
+  .arcade-lore {
+    font-size: 10px;
+    color: #E8DEF8;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fightmobile-btn {
+    background: linear-gradient(135deg, #6750A4, #B3261E);
+    border: 1px solid #FFE37A;
+    color: #FFE37A;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: auto;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  }
+  /* Virtual Joystick (MD3 style) */
+  #joystick-base {
+    position: absolute;
+    bottom: 24px;
+    left: 20px;
+    width: 110px;
+    height: 110px;
+    border-radius: 55px;
+    background: rgba(103, 80, 164, 0.22);
+    border: 2px solid rgba(208, 188, 255, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+  }
+  #joystick-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: #D0BCFF;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    pointer-events: none;
+    transition: transform 0.05s linear;
+  }
+  /* Touch Action Buttons */
+  .action-controls {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 20;
+  }
+  .btn-action {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: rgba(103, 80, 164, 0.85);
+    border: 2px solid #D0BCFF;
+    color: #FEF7FF;
+    font-weight: bold;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+    touch-action: none;
+    cursor: pointer;
+  }
+  .btn-action:active {
+    background: #D0BCFF;
+    color: #1C1B1F;
+    transform: scale(0.92);
+  }
+</style>
+</head>
+<body>
+  <canvas id="scene-canvas"></canvas>
+
+  <div id="engine-mode-badge">MODE: PHASER</div>
+  <div id="gravity-badge">GRAVITY: 9.8 m/s²</div>
+
+  <!-- Arcade High Score & Lore Overlay -->
+  <div id="arcade-overlay">
+    <div class="arcade-header">
+      <span>⚡ ARCADE SCORE: <span id="arcade-score-val" style="color:#FFE37A;">12450</span> PTS</span>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <span class="arcade-badge" id="arcade-rank-val">S-Rank Celestial Voyager</span>
+        <button class="fightmobile-btn" onclick="launchFightMobileUrl()">🥊 FIGHTMOBILE</button>
+      </div>
+    </div>
+    <div class="arcade-stats">
+      <span>BOSSES: <b id="arcade-boss-val" style="color:#D0BCFF;">3</b></span>
+      <span>PRISMS: <b id="arcade-coll-val" style="color:#7AD9FF;">18</b></span>
+      <span id="combo-hud" style="color:#FF8A00; font-weight:bold;">COMBO x1</span>
+    </div>
+    <div class="arcade-lore" id="arcade-lore-text">Codex #04: Titan of the Astral Rift fractured into shimmering stardust.</div>
+  </div>
+
+  <!-- Touch Virtual Joystick -->
+  <div id="joystick-base">
+    <div id="joystick-thumb"></div>
+  </div>
+
+  <!-- Touch Action Buttons -->
+  <div class="action-controls">
+    <div class="btn-action" id="btn-jump">JUMP</div>
+    <div class="btn-action" id="btn-burst" style="background: rgba(179, 38, 30, 0.85); border-color: #FFE37A;">BURST</div>
+  </div>
+
+  <script src="engine.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

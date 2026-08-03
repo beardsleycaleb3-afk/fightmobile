@@ -1,8 +1,11 @@
 package com.example.model
 
+import android.app.Application
 import android.webkit.WebView
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ui.theme.ArtisticCyan
 import com.example.ui.theme.ArtisticGreen
 import com.example.ui.theme.ArtisticOrange
@@ -12,8 +15,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 enum class EngineMode(val title: String, val jsModeName: String, val description: String) {
   PHASER_PHYSICS("Phaser3 / 2D Physics", "phaser", "2D Rigid-Body Physics Engine with Impulse Collision Solver"),
@@ -116,9 +122,28 @@ val defaultSpawnableAssets = listOf(
   )
 )
 
-class CreativeEngineViewModel {
+class CreativeEngineViewModel(application: Application) : AndroidViewModel(application) {
   private var webViewRef: WebView? = null
   private var nextCollisionId: Long = 1L
+  private val repository = ArcadeHighScoreRepository(application)
+
+  val arcadeStats = repository.arcadeStatsFlow.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(5000),
+    initialValue = ArcadeStats()
+  )
+
+  fun recordArcadeScore(score: Int, bosses: Int, collectables: Int, rank: String, lore: String) {
+    viewModelScope.launch {
+      repository.recordArcadeScore(score, bosses, collectables, rank, lore)
+    }
+  }
+
+  fun resetArcadeScores() {
+    viewModelScope.launch {
+      repository.resetScores()
+    }
+  }
 
   private val _currentMode = MutableStateFlow(EngineMode.PHASER_PHYSICS)
   val currentMode: StateFlow<EngineMode> = _currentMode.asStateFlow()
@@ -151,8 +176,46 @@ class CreativeEngineViewModel {
   private val _airResistance = MutableStateFlow(0.99f)
   val airResistance: StateFlow<Float> = _airResistance.asStateFlow()
 
+  private val _isFightMobileOnline = MutableStateFlow(false)
+  val isFightMobileOnline: StateFlow<Boolean> = _isFightMobileOnline.asStateFlow()
+
+  fun toggleFightMobileOnline() {
+    val newState = !_isFightMobileOnline.value
+    _isFightMobileOnline.value = newState
+    webViewRef?.post {
+      if (newState) {
+        webViewRef?.loadUrl("https://beardsleycaleb3-afk.github.io/fightmobile/")
+      } else {
+        webViewRef?.loadUrl("file:///android_asset/index.html")
+      }
+    }
+  }
+
+  fun launchFightMobileOnline() {
+    if (!_isFightMobileOnline.value) {
+      _isFightMobileOnline.value = true
+      webViewRef?.post {
+        webViewRef?.loadUrl("https://beardsleycaleb3-afk.github.io/fightmobile/")
+      }
+    }
+  }
+
+  fun returnToLocalEngine() {
+    if (_isFightMobileOnline.value) {
+      _isFightMobileOnline.value = false
+      webViewRef?.post {
+        webViewRef?.loadUrl("file:///android_asset/index.html")
+      }
+    }
+  }
+
   fun bindWebView(webView: WebView) {
     webViewRef = webView
+    if (_isFightMobileOnline.value) {
+      webViewRef?.loadUrl("https://beardsleycaleb3-afk.github.io/fightmobile/")
+    } else {
+      webViewRef?.loadUrl("file:///android_asset/index.html")
+    }
   }
 
   fun setMode(mode: EngineMode) {

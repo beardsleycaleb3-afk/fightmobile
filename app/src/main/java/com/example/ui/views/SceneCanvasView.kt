@@ -1,11 +1,14 @@
 package com.example.ui.views
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Build
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import java.io.File
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -67,6 +70,22 @@ class AndroidEngineBridge(private val viewModel: CreativeEngineViewModel) {
   fun onShockwave(x: Int, y: Int) {
     // Optional telemetry trigger
   }
+
+  @JavascriptInterface
+  fun onLaunchFightMobile() {
+    viewModel.launchFightMobileOnline()
+  }
+}
+
+private fun ensureWebViewCacheDirs(context: Context) {
+  try {
+    val cacheDir = context.cacheDir
+    val baseDir = File(cacheDir, "WebView/Default/HTTP Cache/Code Cache")
+    File(baseDir, "js").mkdirs()
+    File(baseDir, "wasm").mkdirs()
+  } catch (e: Exception) {
+    // Ignore filesystem exceptions
+  }
 }
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -77,6 +96,7 @@ fun SceneCanvasView(
 ) {
   val fps by viewModel.fps.collectAsState()
   val objectCount by viewModel.objectCount.collectAsState()
+  val isFightMobileOnline by viewModel.isFightMobileOnline.collectAsState()
 
   Box(
     modifier = modifier
@@ -93,11 +113,17 @@ fun SceneCanvasView(
     // High-performance WebView Canvas Engine
     AndroidView(
       factory = { ctx ->
-        WebView(ctx).apply {
+        ensureWebViewCacheDirs(ctx)
+        val attributedCtx = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          ctx.createAttributionContext("WebView")
+        } else {
+          ctx
+        }
+        WebView(attributedCtx).apply {
           settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            mediaPlaybackRequiresUserGesture = false
+            mediaPlaybackRequiresUserGesture = true
             loadWithOverviewMode = true
             useWideViewPort = true
             cacheMode = WebSettings.LOAD_DEFAULT
@@ -108,11 +134,39 @@ fun SceneCanvasView(
           setBackgroundColor(0x1C1B1F)
 
           viewModel.bindWebView(this)
-          loadUrl("file:///android_asset/creative_engine.html")
         }
       },
       modifier = Modifier.fillMaxSize()
     )
+
+    // Top-Left Toggle: FightMobile Online Arcade vs Local Engine
+    Surface(
+      color = if (isFightMobileOnline) Color(0xFF6750A4) else Color(0xCC2B2930),
+      shape = RoundedCornerShape(14.dp),
+      modifier = Modifier
+        .align(Alignment.TopStart)
+        .padding(16.dp)
+        .clickable { viewModel.toggleFightMobileOnline() }
+        .border(
+          width = 1.dp,
+          color = if (isFightMobileOnline) Color(0xFFEADDFF) else ArtisticBorder.copy(alpha = 0.5f),
+          shape = RoundedCornerShape(14.dp)
+        )
+        .testTag("action_toggle_fightmobile")
+    ) {
+      Row(
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Text(
+          text = if (isFightMobileOnline) "🥊 FIGHTMOBILE ONLINE (LIVE)" else "🥊 FIGHTMOBILE ONLINE",
+          fontSize = 11.sp,
+          fontWeight = FontWeight.Bold,
+          color = if (isFightMobileOnline) Color(0xFFFFE37A) else Color(0xFFEADDFF)
+        )
+      }
+    }
 
     // Top-Center Overlay: Telemetry FPS & Bodies indicator
     Row(

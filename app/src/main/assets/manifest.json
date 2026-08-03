@@ -1,0 +1,24 @@
+{
+  "name": "FightMobile Creative Engine",
+  "short_name": "FightMobile",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1C1B1F",
+  "theme_color": "#211C2E",
+  "description": "2D Creative Physics Engine & Arcade High Score Experience for Android Chrome Mobile in Portrait Mode",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
