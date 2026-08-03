@@ -1,0 +1,515 @@
+{
+  "group_id": "b6378b74-6b61-4a14-ba39-14a5d00e0860",
+  "states": [
+    {
+      "character": {
+        "id": "5e9ecf14-8dc7-418b-9a97-b905d37be480",
+        "name": "Original fighting game character, explosive rushdown striker, lean athletic build, flame-lined gloves and tapered combat wraps, street-fighter stance, aggressive forward lean, ember-orange and black palette, high-detail pixel art, crisp pixel edges, 256x256 base framing, side-view arcade fighter, strong silhouette, transparent background, consistent proportions, readable hands and feet, premium retro game character",
+        "prompt": "Original fighting game character, explosive rushdown striker, lean athletic build, flame-lined gloves and tapered combat wraps, street-fighter stance, aggressive forward lean, ember-orange and black palette, high-detail pixel art, crisp pixel edges, 256x256 base framing, side-view arcade fighter, strong silhouette, transparent background, consistent proportions, readable hands and feet, premium retro game character",
+        "size": {
+          "width": 92,
+          "height": 92
+        },
+        "template_id": "mannequin",
+        "directions": 4,
+        "view": "side",
+        "created_at": "2026-07-03T00:43:40.523706+00:00"
+      },
+      "folder": "Original_fighting_game_character_explosive_rushdow",
+      "frames": {
+        "rotations": {
+          "south": "Original_fighting_game_character_explosive_rushdow/rotations/south.png",
+          "west": "Original_fighting_game_character_explosive_rushdow/rotations/west.png",
+          "east": "Original_fighting_game_character_explosive_rushdow/rotations/east.png",
+          "north": "Original_fighting_game_character_explosive_rushdow/rotations/north.png"
+        },
+        "animations": {
+          "Taking_Punch": {
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/south/frame_005.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/east/frame_005.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/west/frame_005.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Taking_Punch/north/frame_005.png"
+            ]
+          },
+          "Surprise_Uppercut": {
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/west/frame_006.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/east/frame_006.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/south/frame_006.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Surprise_Uppercut/north/frame_006.png"
+            ]
+          },
+          "Fireball": {
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/west/frame_005.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/east/frame_005.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/south/frame_005.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fireball/north/frame_005.png"
+            ]
+          },
+          "Cross_Punch": {
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/north/frame_005.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/west/frame_005.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/east/frame_005.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Cross_Punch/south/frame_005.png"
+            ]
+          },
+          "Getting_Up": {
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/north/frame_004.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/west/frame_004.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/south/frame_004.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Getting_Up/east/frame_004.png"
+            ]
+          },
+          "Fight_Stance_Idle": {
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/east/frame_007.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/north/frame_007.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/south/frame_007.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Fight_Stance_Idle/west/frame_007.png"
+            ]
+          },
+          "Falling_Back_Death": {
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/south/frame_006.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/north/frame_006.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/east/frame_006.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Falling_Back_Death/west/frame_006.png"
+            ]
+          },
+          "Crouching": {
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/east/frame_004.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/south/frame_004.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/west/frame_004.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Crouching/north/frame_004.png"
+            ]
+          },
+          "Victory_stance_he_engulfs_in_flames_like_the_human": {
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_007.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_008.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_009.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_010.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_011.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/west/frame_012.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_007.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_008.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_009.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_010.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_011.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/south/frame_012.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_007.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_008.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_009.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_010.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_011.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/north/frame_012.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_007.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_008.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_009.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_010.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_011.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Victory_stance_he_engulfs_in_flames_like_the_human/east/frame_012.png"
+            ]
+          },
+          "Running": {
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/east/frame_007.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/south/frame_007.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/west/frame_007.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_006.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Running/north/frame_007.png"
+            ]
+          },
+          "Lead_Jab": {
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/south/frame_002.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/east/frame_002.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/west/frame_002.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Lead_Jab/north/frame_002.png"
+            ]
+          },
+          "Throw_Object": {
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/north/frame_006.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/west/frame_006.png"
+            ],
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/east/frame_006.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Throw_Object/south/frame_006.png"
+            ]
+          },
+          "Roundhouse_Kick": {
+            "east": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/east/frame_006.png"
+            ],
+            "west": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/west/frame_006.png"
+            ],
+            "south": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/south/frame_006.png"
+            ],
+            "north": [
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_000.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_001.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_002.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_003.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_004.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_005.png",
+              "Original_fighting_game_character_explosive_rushdow/animations/Roundhouse_Kick/north/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-02T07:27:40.917897"
+}
